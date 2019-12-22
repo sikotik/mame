@@ -44,7 +44,7 @@
 # PROFILER = 1
 # SANITIZE =
 
-# PTR64 = 1
+# PTR64 = 0
 # BIGENDIAN = 1
 # NOASM = 1
 
@@ -164,10 +164,10 @@ ifneq ($(filter arm%,$(UNAME_P)),)
 PLATFORM := arm
 endif
 ifneq ($(filter aarch64%,$(UNAME_M)),)
-PLATFORM := arm64
+PLATFORM := arm
 endif
 ifneq ($(filter aarch64%,$(UNAME_P)),)
-PLATFORM := arm64
+PLATFORM := arm
 endif
 ifneq ($(filter powerpc,$(UNAME_P)),)
 PLATFORM := powerpc
@@ -364,7 +364,7 @@ endif
 endif
 
 ifeq ($(findstring aarch64,$(UNAME)),aarch64)
-ARCHITECTURE :=
+ARCHITECTURE := arm
 ifndef NOASM
 	NOASM := 1
 endif
