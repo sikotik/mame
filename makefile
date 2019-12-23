@@ -364,7 +364,7 @@ endif
 endif
 
 ifeq ($(findstring aarch64,$(UNAME)),aarch64)
-ARCHITECTURE := arm
+ARCHITECTURE := 
 ifndef NOASM
 	NOASM := 1
 endif
