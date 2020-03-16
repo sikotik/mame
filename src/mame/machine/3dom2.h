@@ -8,16 +8,18 @@
 
 ***************************************************************************/
 
-#pragma once
-
 #ifndef MAME_MACHINE_3DOM2_H
 #define MAME_MACHINE_3DOM2_H
 
-#include "emu.h"
+#pragma once
+
+#include "video/3dom2_te.h"
+
 #include "cpu/dspp/dspp.h"
 #include "cpu/powerpc/ppc.h"
-#include "video/3dom2_te.h"
+
 #include "screen.h"
+
 
 #define M2_BAD_TIMING       0       // HACK
 
@@ -372,8 +374,8 @@ private:
 
 
 	// GPIO
-	devcb_read_line m_gpio_in[4];
-	devcb_write_line m_gpio_out[4];
+	devcb_read_line::array<4> m_gpio_in;
+	devcb_write_line::array<4> m_gpio_out;
 
 	// Registers
 	uint32_t    m_mcfg;

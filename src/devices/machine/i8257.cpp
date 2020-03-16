@@ -252,29 +252,29 @@ inline void i8257_device::advance()
 //-------------------------------------------------
 
 i8257_device::i8257_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
-	: device_t(mconfig, I8257, tag, owner, clock),
-		device_execute_interface(mconfig, *this),
-		m_icount(0),
-		m_reverse_rw(0),
-		m_tc(false),
-		m_msb(0),
-		m_hreq(CLEAR_LINE),
-		m_hack(0),
-		m_ready(1),
-		m_state(0),
-		m_current_channel(0),
-		m_last_channel(0),
-		m_transfer_mode(0),
-		m_status(0),
-		m_request(0),
-		m_temp(0),
-		m_out_hrq_cb(*this),
-		m_out_tc_cb(*this),
-		m_in_memr_cb(*this),
-		m_out_memw_cb(*this),
-		m_in_ior_cb{{*this}, {*this}, {*this}, {*this}},
-		m_out_iow_cb{{*this}, {*this}, {*this}, {*this}},
-		m_out_dack_cb{{*this}, {*this}, {*this}, {*this}}
+	: device_t(mconfig, I8257, tag, owner, clock)
+	, device_execute_interface(mconfig, *this)
+	, m_icount(0)
+	, m_reverse_rw(0)
+	, m_tc(false)
+	, m_msb(0)
+	, m_hreq(CLEAR_LINE)
+	, m_hack(0)
+	, m_ready(1)
+	, m_state(0)
+	, m_current_channel(0)
+	, m_last_channel(0)
+	, m_transfer_mode(0)
+	, m_status(0)
+	, m_request(0)
+	, m_temp(0)
+	, m_out_hrq_cb(*this)
+	, m_out_tc_cb(*this)
+	, m_in_memr_cb(*this)
+	, m_out_memw_cb(*this)
+	, m_in_ior_cb(*this)
+	, m_out_iow_cb(*this)
+	, m_out_dack_cb(*this)
 {
 }
 
@@ -294,12 +294,9 @@ void i8257_device::device_start()
 	m_out_tc_cb.resolve_safe();
 	m_in_memr_cb.resolve_safe(0);
 	m_out_memw_cb.resolve_safe();
-	for (auto &cb : m_in_ior_cb)
-		cb.resolve_safe(0);
-	for (auto &cb : m_out_iow_cb)
-		cb.resolve_safe();
-	for (auto &cb : m_out_dack_cb)
-		cb.resolve_safe();
+	m_in_ior_cb.resolve_all_safe(0);
+	m_out_iow_cb.resolve_all_safe();
+	m_out_dack_cb.resolve_all_safe();
 
 	// state saving
 	save_item(NAME(m_msb));
@@ -313,18 +310,9 @@ void i8257_device::device_start()
 	save_item(NAME(m_status));
 	save_item(NAME(m_request));
 
-	save_item(NAME(m_channel[0].m_address));
-	save_item(NAME(m_channel[0].m_count));
-	save_item(NAME(m_channel[0].m_mode));
-	save_item(NAME(m_channel[1].m_address));
-	save_item(NAME(m_channel[1].m_count));
-	save_item(NAME(m_channel[1].m_mode));
-	save_item(NAME(m_channel[2].m_address));
-	save_item(NAME(m_channel[2].m_count));
-	save_item(NAME(m_channel[2].m_mode));
-	save_item(NAME(m_channel[3].m_address));
-	save_item(NAME(m_channel[3].m_count));
-	save_item(NAME(m_channel[3].m_mode));
+	save_item(STRUCT_MEMBER(m_channel, m_address));
+	save_item(STRUCT_MEMBER(m_channel, m_count));
+	save_item(STRUCT_MEMBER(m_channel, m_mode));
 }
 
 

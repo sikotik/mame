@@ -43,9 +43,9 @@ STA-0001B   P1-105A     96? Meosis Magic                            Sammy
 STA-0001B   ?           97  Joryuu Syougi Kyoushitsu (3)            Visco
 STA-0001B   VISCO-JJ1   97  Koi Koi Shimasho 2                      Visco
 STA-0001B   P1-112A     97  Mahjong Hyper Reaction 2                Sammy
-STA-0001B   ?           97  Monster Slider                          Visco / Datt
-STA-0001    ?           97  Super Real Mahjong P7                   Seta
-STA-0001B   ?           98  Gourmet Battle Quiz Ryorioh CooKing     Visco
+STA-0001B   STS-0001    97  Monster Slider                          Visco / Datt
+STA-0001    dedicated   97  Super Real Mahjong P7                   Seta
+STA-0001B   VISCO-JJ1   98  Gourmet Battle Quiz Ryorioh CooKing     Visco
 STA-0001B   P1-112C     98  Pachinko Sexy Reaction                  Sammy
 STA-0001B   B1-001A     99  Pachinko Sexy Reaction 2                Sammy
 STA-0001B   P1-112C     99  Change Air Blade                        Visco
@@ -2624,7 +2624,7 @@ void ssv_state::drifto94(machine_config &config)
 	m_dsp->set_addrmap(AS_PROGRAM, &ssv_state::dsp_prg_map);
 	m_dsp->set_addrmap(AS_DATA, &ssv_state::dsp_data_map);
 
-	config.m_perfect_cpu_quantum = subtag("maincpu");
+	config.set_perfect_quantum(m_maincpu);
 
 	NVRAM(config, "nvram", nvram_device::DEFAULT_ALL_0);
 
@@ -2798,7 +2798,7 @@ void ssv_state::stmblade(machine_config &config)
 	m_dsp->set_addrmap(AS_DATA, &ssv_state::dsp_data_map);
 
 	/* don't need this, game just does a simple check at boot then the DSP stalls into a tight loop. */
-	//config.m_perfect_cpu_quantum = subtag("maincpu");
+	//config.set_perfect_quantum(m_maincpu);
 
 	NVRAM(config, "nvram", nvram_device::DEFAULT_ALL_0);
 
@@ -2907,7 +2907,7 @@ void ssv_state::twineag2(machine_config &config)
 	m_dsp->set_addrmap(AS_PROGRAM, &ssv_state::dsp_prg_map);
 	m_dsp->set_addrmap(AS_DATA, &ssv_state::dsp_data_map);
 
-	config.m_perfect_cpu_quantum = subtag("maincpu");
+	config.set_perfect_quantum(m_maincpu);
 
 	WATCHDOG_TIMER(config, "watchdog");
 

@@ -115,8 +115,8 @@ protected:
 	virtual void device_reset() override;
 
 	virtual void execute_set_input(int inputnum, int state) override;
-	virtual u64 execute_clocks_to_cycles(u64 clocks) const override;
-	virtual u64 execute_cycles_to_clocks(u64 cycles) const override;
+	virtual u64 execute_clocks_to_cycles(u64 clocks) const noexcept override;
+	virtual u64 execute_cycles_to_clocks(u64 cycles) const noexcept override;
 
 	virtual std::unique_ptr<util::disasm_interface> create_disassembler() override;
 
@@ -149,8 +149,8 @@ private:
 	u8      copcr_cm() const    { return m_copcr & 0x03; }
 
 	// digital I/O
-	devcb_read8         m_port_cb_r[PORT_COUNT];
-	devcb_write8        m_port_cb_w[PORT_COUNT];
+	devcb_read8::array<PORT_COUNT> m_port_cb_r;
+	devcb_write8::array<PORT_COUNT> m_port_cb_w;
 	u8                  m_port_bits[PORT_COUNT];
 	u8                  m_port_interrupt[PORT_COUNT];
 	u8                  m_port_input[PORT_COUNT];

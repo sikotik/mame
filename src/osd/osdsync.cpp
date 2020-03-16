@@ -11,10 +11,10 @@
 #include <windows.h>
 #include <process.h>
 #include <tchar.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifdef __GNUC__
-#include <stdint.h>
+#include <cstdint>
 #endif
 #endif
 #include <mutex>
@@ -86,7 +86,7 @@ static void spin_while_not(const volatile _AtomType * volatile atom, const _Main
 //  osd_num_processors
 //============================================================
 
-int osd_get_num_processors(void)
+int osd_get_num_processors()
 {
 #if defined(SDLMAME_EMSCRIPTEN)
 	// multithreading is not supported at this time
@@ -212,7 +212,7 @@ int osd_num_processors = 0;
 //  FUNCTION PROTOTYPES
 //============================================================
 
-static int effective_num_processors(void);
+static int effective_num_processors();
 static void * worker_thread_entry(void *param);
 static void worker_thread_process(osd_work_queue *queue, work_thread_info *thread);
 static bool queue_has_list_items(osd_work_queue *queue);
@@ -446,20 +446,18 @@ void osd_work_queue_free(osd_work_queue *queue)
 	// free all items in the free list
 	while (queue->free.load() != nullptr)
 	{
-		osd_work_item *item = (osd_work_item *)queue->free;
+		auto *item = (osd_work_item *)queue->free;
 		queue->free = item->next;
-		if (item->event != nullptr)
-			delete item->event;
+		delete item->event;
 		delete item;
 	}
 
 	// free all items in the active list
 	while (queue->list.load() != nullptr)
 	{
-		osd_work_item *item = (osd_work_item *)queue->list;
+		auto *item = (osd_work_item *)queue->list;
 		queue->list = item->next;
-		if (item->event != nullptr)
-			delete item->event;
+		delete item->event;
 		delete item;
 	}
 
@@ -642,7 +640,7 @@ void osd_work_item_release(osd_work_item *item)
 //  effective_num_processors
 //============================================================
 
-static int effective_num_processors(void)
+static int effective_num_processors()
 {
 	int physprocs = osd_get_num_processors();
 
@@ -673,7 +671,7 @@ static int effective_num_processors(void)
 
 static void *worker_thread_entry(void *param)
 {
-	work_thread_info *thread = (work_thread_info *)param;
+	auto *thread = (work_thread_info *)param;
 	osd_work_queue &queue = thread->queue;
 
 	// loop until we exit

@@ -61,7 +61,7 @@ DECLARE_DEVICE_TYPE(GIO64_SLOT, gio64_slot_device)
 
 
 // class representing interface-specific live GIO64 card
-class device_gio64_card_interface : public device_slot_card_interface
+class device_gio64_card_interface : public device_interface
 {
 	friend class gio64_device;
 public:
@@ -149,7 +149,7 @@ protected:
 	device_gio64_card_interface *m_device_list[3];
 
 private:
-	devcb_write_line m_interrupt_cb[3];
+	devcb_write_line::array<3> m_interrupt_cb;
 
 	DECLARE_READ64_MEMBER(no_gfx_r);
 	DECLARE_READ64_MEMBER(no_exp0_r);
@@ -164,4 +164,4 @@ DECLARE_DEVICE_TYPE(GIO64, gio64_device)
 
 void gio64_cards(device_slot_interface &device);
 
-#endif  // MAME_BUS_GIO_GIO_H
+#endif // MAME_BUS_GIO_GIO_H

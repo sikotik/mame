@@ -71,7 +71,7 @@ public:
 
 	auto int_req_callback() { return m_int_req_callback.bind(); }
 	auto pri_out_callback() { return m_pri_out_callback.bind(); }
-	template<typename Object> void set_int_daisy_chain_callback(Object &&cb) { m_int_daisy_chain_callback = std::forward<Object>(cb); }
+	template <typename... T> void set_int_daisy_chain_callback(T &&... args) { m_int_daisy_chain_callback.set(std::forward<T>(args)...); }
 
 	virtual DECLARE_READ8_MEMBER(read);
 	virtual DECLARE_WRITE8_MEMBER(write);
@@ -138,8 +138,8 @@ protected:
 
 	virtual void device_resolve_objects() override;
 
-	devcb_read8 m_read_port[2];
-	devcb_write8 m_write_port[2];
+	devcb_read8::array<2> m_read_port;
+	devcb_write8::array<2> m_write_port;
 };
 
 class f3856_device : public f3851_device

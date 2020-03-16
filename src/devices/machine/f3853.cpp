@@ -47,6 +47,7 @@ f3853_device::f3853_device(const machine_config &mconfig, device_type type, cons
 	device_t(mconfig, type, tag, owner, clock),
 	m_int_req_callback(*this),
 	m_pri_out_callback(*this),
+	m_int_daisy_chain_callback(*this),
 	m_int_vector(0),
 	m_prescaler(31),
 	m_priority_line(false),
@@ -59,8 +60,8 @@ f3853_device::f3853_device(const machine_config &mconfig, const char *tag, devic
 
 f3851_device::f3851_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, u32 clock) :
 	f3853_device(mconfig, type, tag, owner, clock),
-	m_read_port{{*this}, {*this}},
-	m_write_port{{*this}, {*this}}
+	m_read_port(*this),
+	m_write_port(*this)
 { }
 
 f3851_device::f3851_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock) :
@@ -89,7 +90,7 @@ void f3853_device::device_resolve_objects()
 {
 	m_int_req_callback.resolve_safe();
 	m_pri_out_callback.resolve_safe(); // TODO: not implemented
-	m_int_daisy_chain_callback.bind_relative_to(*owner());
+	m_int_daisy_chain_callback.resolve();
 }
 
 void f3851_device::device_resolve_objects()
@@ -97,10 +98,8 @@ void f3851_device::device_resolve_objects()
 	f3853_device::device_resolve_objects();
 
 	// 2 I/O ports
-	for (devcb_read8 &cb : m_read_port)
-		cb.resolve_safe(0);
-	for (devcb_write8 &cb : m_write_port)
-		cb.resolve_safe();
+	m_read_port.resolve_all_safe(0);
+	m_write_port.resolve_all_safe();
 }
 
 void f3853_device::device_start()

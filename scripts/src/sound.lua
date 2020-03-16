@@ -1436,7 +1436,7 @@ end
 
 ---------------------------------------------------
 -- MM5837 Noise Generator
---@src/devices/sound/mm5837.h,MACHINES["MM5837"] = true
+--@src/devices/sound/mm5837.h,SOUNDS["MM5837"] = true
 ---------------------------------------------------
 
 if (SOUNDS["MM5837"]~=null) then
@@ -1448,7 +1448,7 @@ end
 
 ---------------------------------------------------
 -- Intelligent Designs DAVE
---@src/devices/sound/dave.h,MACHINES["DAVE"] = true
+--@src/devices/sound/dave.h,SOUNDS["DAVE"] = true
 ---------------------------------------------------
 
 if (SOUNDS["DAVE"]~=null) then
